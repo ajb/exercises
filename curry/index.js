@@ -1,14 +1,13 @@
-function argsArray(argsObject) {
-  return Array.prototype.slice.call(argsObject, 0);
-}
+module.exports = function curry(fn, args) {
+  if (typeof args === 'undefined') args = [];
 
-module.exports = function curry(f, n) {
-  var args = argsArray(arguments);
-  if (typeof n === 'undefined')
-      args[1] = f.length;
-  if (n === args.length - 2)
-      return f.apply(undefined, args.slice(2));
-  return function() {
-      return curry.apply(undefined, args.concat(argsArray(arguments)));
-  };
+  return function(){
+    var newArgs = args.concat(Array.prototype.slice.call(arguments, 0));
+
+    if (newArgs.length == fn.length) {
+      return fn.apply(this, newArgs);
+    } else {
+      return curry(fn, newArgs);
+    }
+  }
 }
