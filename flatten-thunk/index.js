@@ -1,19 +1,18 @@
 module.exports = function flattenThunk(fn) {
-  var err;
-
   return function(cb) {
-    function callFn(func) {
+    var err;
+    next(fn);
+
+    function next(func) {
       func.call(this, function(thisErr, result){
         err = thisErr;
 
         if (typeof result === 'function') {
-          callFn(result);
+          next(result);
         } else {
           cb(err, result);
         }
       });
     }
-
-    callFn(fn);
   }
 }
