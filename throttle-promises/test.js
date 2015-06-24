@@ -30,6 +30,7 @@ describe('throttle-promises', function() {
     }
 
     throttlePromises(5, arr).then(function(results) {
+      console.log('SUP', results);
       var expectedResults = Array(101).join('.').split('').map(function(dot, index) {
         return index + '!';
       });
